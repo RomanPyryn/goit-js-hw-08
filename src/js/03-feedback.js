@@ -6,16 +6,14 @@ const formData = {};
 
 const formEl = document.querySelector('.feedback-form');
 const inputEl = document.querySelector('.feedback-form input');
-const textreaEl = document.querySelector('.feedback-form textrea')
+const textareaEl = document.querySelector('.feedback-form textarea')
 
 formEl.addEventListener('submit', onFormSubmit);
-formEl.addEventListener('input', throttle(onFormInput, 1000));
-
-savedDataOutput();
+formEl.addEventListener('input', throttle(onFormInput, 500));
 
 function onFormSubmit(e) { 
     e.preventDefault();
-    console.log('submit');
+    console.log(formData);
     e.currentTarget.reset();
     localStorage.removeItem(FEEDBACK);
 };
@@ -23,18 +21,13 @@ function onFormSubmit(e) {
 function onFormInput(e) { 
     formData[e.target.name] = e.target.value;
 
-    console.log(formData);
     localStorage.setItem(FEEDBACK, JSON.stringify(formData));
 };
 
-function savedDataOutput() { 
-    const savedData = JSON.parse(localStorage.getItem(FEEDBACK));
+
+const savedData = JSON.parse(localStorage.getItem(FEEDBACK));
    
-    if (savedData) { 
-        console.log(savedData);
-        console.log(savedData.email);
-        console.log(savedData.message);
-        inputEl.textContent = savedData.email;
-        textreaEl.textContent = savedData.message;
+    if (savedData) {
+        inputEl.value = savedData.email;
+        textareaEl.value = savedData.message;
     };
-}; 
