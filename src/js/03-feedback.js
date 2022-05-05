@@ -6,17 +6,10 @@ const formData = {};
 
 const formEl = document.querySelector('.feedback-form');
 const inputEl = document.querySelector('.feedback-form input');
-const textareaEl = document.querySelector('.feedback-form textarea')
+const textareaEl = document.querySelector('.feedback-form textarea');
 
 formEl.addEventListener('submit', onFormSubmit);
 formEl.addEventListener('input', throttle(onFormInput, 500));
-
-function onFormSubmit(e) { 
-    e.preventDefault();
-    console.log(formData);
-    e.currentTarget.reset();
-    localStorage.removeItem(FEEDBACK);
-};
 
 function onFormInput(e) { 
     formData[e.target.name] = e.target.value;
@@ -24,10 +17,19 @@ function onFormInput(e) {
     localStorage.setItem(FEEDBACK, JSON.stringify(formData));
 };
 
-
 const savedData = JSON.parse(localStorage.getItem(FEEDBACK));
-   
-    if (savedData) {
-        inputEl.value = savedData.email;
-        textareaEl.value = savedData.message;
+
+if (savedData) {
+        savedData.email ? inputEl.value = savedData.email : inputEl.value = '';
+        savedData.message ? textareaEl.value = savedData.message : textareaEl.value = '';
     };
+
+function onFormSubmit(e) { 
+    e.preventDefault();
+    savedData ? console.log('Відпрацьовує savedData', savedData) : console.log('Відпрацьовує formData', formData);
+    e.currentTarget.reset();
+    localStorage.removeItem(FEEDBACK);
+};
+
+
+    
